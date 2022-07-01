@@ -1,0 +1,19 @@
+nodes
+a=load data from file
+b=parse nodes
+c=parse coordinates
+d=parse vertices
+e=render
+
+coordinates
+a=A1
+b=B1
+c=C1
+d=D1
+e=E1
+
+vertices
+a,b
+b,c
+c,d
+d,e

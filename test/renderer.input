@@ -1,0 +1,50 @@
+nodes
+a=iterate through nodes to get sizes
+b=size 1
+c=size 2
+d=size n
+e=find the largest size
+f=create grid
+g=draw box 1
+h=draw box 2
+i=draw box n
+j=draw text 1
+k=draw text 2
+l=draw text n
+m=draw vertices between boxes
+n=print ascii output
+
+coordinates
+a=A2
+b=B1
+c=B2
+d=B3
+e=C2
+f=D2
+g=E1
+h=E2
+i=E3
+j=F1
+k=F2
+l=F3
+m=G2
+n=H2
+
+vertices
+a,b
+a,c
+a,d
+b,e
+c,e
+d,e
+e,f
+f,g
+f,h
+f,i
+g,j
+h,k
+i,l
+j,m
+k,m
+l,m
+m,n

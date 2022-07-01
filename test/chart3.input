@@ -1,0 +1,24 @@
+nodes
+a=bootloader
+b=init
+c=read i2c
+d=monitor interupts
+e=poll GPIO
+f=transmit data
+
+coordinates
+a=A2
+b=B2
+c=C1
+d=C2
+e=C3
+f=D2
+
+vertices
+a,b
+b,c
+b,d
+b,e
+c,f
+d,f
+e,f

@@ -1,0 +1,12 @@
+nodes
+a=bootloader
+b=init
+
+coordinates
+a=A1
+b=B1
+cC1
+
+vertices
+a,b
+b,c

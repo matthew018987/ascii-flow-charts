@@ -1,0 +1,16 @@
+nodes
+a=bootloader
+b=init
+c=read sensors
+d=monitor interupts
+
+coordinates
+a=A1
+b=B1
+c=C1
+d=C2
+
+vertices
+a,b
+b,c
+b,d

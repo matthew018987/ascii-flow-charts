@@ -1,0 +1,47 @@
+nodes
+a=parse string list
+b=string 1
+c=string 2
+d=string n
+e=string validity check
+f=string 1 valid check
+g=string 2 valid check
+h=string n valid check
+i=create structures
+j=nodes
+k=node 1
+l=node 2
+m=node n
+
+coordinates
+a=A2
+b=B1
+c=B2
+d=B3
+e=C2
+f=D1
+g=D2
+h=D3
+i=E2
+j=F2
+k=G1
+l=G2
+m=G3
+
+vertices
+a,b
+a,c
+a,d
+b,e
+c,e
+d,e
+e,f
+e,g
+e,h
+f,i
+g,i
+h,i
+i,j
+j,k
+j,l
+j,m
