@@ -21,48 +21,48 @@
 # SOFTWARE.
 
 '''
-Process the input file 
+Process the input file
 
 Process input fields into lists, parse each list into their respective data structures,
-render the chart from the data structures. 
+render the chart from the data structures.
 
 
 
-           |             
-  _____________________  
- |                     | 
- | load data from file | 
- |                     | 
-  ---------------------  
-           |             
-           |             
-  _____________________  
- |                     | 
- |     parse nodes     | 
- |                     | 
-  ---------------------  
-           |             
-           |             
-  _____________________  
- |                     | 
- |  parse coordinates  | 
- |                     | 
-  ---------------------  
-           |             
-           |             
-  _____________________  
- |                     | 
- |   parse vertices    | 
- |                     | 
-  ---------------------  
-           |             
-           |             
-  _____________________  
- |                     | 
- |       render        | 
- |                     | 
-  ---------------------  
-           |           
+           |
+  _____________________
+ |                     |
+ | load data from file |
+ |                     |
+  ---------------------
+           |
+           |
+  _____________________
+ |                     |
+ |     parse nodes     |
+ |                     |
+  ---------------------
+           |
+           |
+  _____________________
+ |                     |
+ |  parse coordinates  |
+ |                     |
+  ---------------------
+           |
+           |
+  _____________________
+ |                     |
+ |   parse vertices    |
+ |                     |
+  ---------------------
+           |
+           |
+  _____________________
+ |                     |
+ |       render        |
+ |                     |
+  ---------------------
+           |
 
 This flow chart was creared by this program
 '''
@@ -72,6 +72,26 @@ from renderer import Renderer
 
 
 class FileProcessor:
+    """
+    A class to manage the loading of the input file and execution of processing and
+    plotting function
+
+    Attributes:
+        nodes_strings: list of strings
+            contains strings from nodes section of input file
+        coordinates_strings: list of strings
+            contains strings from coordinates section of input file
+        vertices_strings: list of strings
+            contains strings from vertices section of input file
+
+    Methods:
+        load_input_file(file_path):
+            load strings from input file into string lists
+            print the number of lines found in each of the 3 sections
+        plot_chart():
+            call functions to load strings from lists into structures
+            call functions to print output to stdout
+    """
 
     def __init__(self):
         self.nodes_strings = []
@@ -81,7 +101,7 @@ class FileProcessor:
     def load_input_file(self, file_path):
         """
         we are expecting 3 sections in a file (nodes, coordinates, vertices)
-        create a list of the lines from the file under each header 
+        create a list of the lines from the file under each header
 
         Args:
             file_path: string containing the path to the input file
@@ -90,33 +110,36 @@ class FileProcessor:
             none
         """
         try:
-            with open(file_path, 'r') as chart:
+            with open(file_path, 'r', encoding='utf-8') as chart:
                 line = chart.readline().strip()
                 while line:
-                    # once we have found the nodes header, process all following lines until we hit an empty line
+                    # once we have found the nodes header
+                    # process all following lines until we hit an empty line
                     if line == 'nodes':
                         line = chart.readline().strip()
                         while line != '':
                             self.nodes_strings.append(line)
                             line = chart.readline().strip()
 
-                    # once we have found the coordinates header, process all following lines until we hit an empty line
+                    # once we have found the coordinates header
+                    # process all following lines until we hit an empty line
                     if line == 'coordinates':
                         line = chart.readline().strip()
                         while line != '':
                             self.coordinates_strings.append(line)
                             line = chart.readline().strip()
 
-                    # once we have found the verticess header, process all following lines until we hit an empty line
+                    # once we have found the verticess header
+                    # process all following lines until we hit an empty line
                     if line == 'vertices':
                         line = chart.readline().strip()
                         while line != '':
                             self.vertices_strings.append(line)
                             line = chart.readline().strip()
-    
+
                     line = chart.readline().strip()
-        except:
-            print('file format error occured')
+        except Exception as error:
+            raise Exception('file format error occured') from error
 
         chart.close()
 
@@ -124,8 +147,6 @@ class FileProcessor:
         print('number of coordinates found: ', len(self.coordinates_strings))
         print('number of vertices found: ', len(self.vertices_strings))
         print('')
-
-        return
 
     def plot_chart(self):
         """
@@ -146,13 +167,11 @@ class FileProcessor:
                 nodes.parse_nodes_str(self.nodes_strings)
                 nodes.parse_coordinates_str(self.coordinates_strings)
                 nodes.parse_vertices_str(self.vertices_strings)
-               
+
                 # render data structures
                 renderer = Renderer()
                 renderer.draw_chart(nodes)
-            except:
-                print('error parsing input file')
+            except Exception as error:
+                raise Exception('error parsing input file') from error
         else:
             print('input file did not contain: nodes, coordinates and vertices')
-        return
-

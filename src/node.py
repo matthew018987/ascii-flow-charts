@@ -21,67 +21,92 @@
 # SOFTWARE.
 
 '''
-Manage the structure of nodes and the parsing of text data into structures 
+Manage the structure of nodes and the parsing of text data into structures
 
 A node is a structure that contains the details of a box in the chart.
 The node list is a structure that contains the nodes and parsers for all elements
 
 
-                                       |                                         
-                             _______________________                             
-                            |                       |                            
-                            |   parse string list   |                            
-                            |                       |                            
-                             -----------------------                             
-             __________________________|__________________________               
-            |                          |                          |              
-  _______________________    _______________________    _______________________  
- |                       |  |                       |  |                       | 
- |       string 1        |  |       string 2        |  |       string n        | 
- |                       |  |                       |  |                       | 
-  -----------------------    -----------------------    -----------------------  
-            |__________________________|__________________________|              
-                                       |                                         
-                             _______________________                             
-                            |                       |                            
-                            | string validity check |                            
-                            |                       |                            
-                             -----------------------                             
-             __________________________|__________________________               
-            |                          |                          |              
-  _______________________    _______________________    _______________________  
- |                       |  |                       |  |                       | 
- | string 1 valid check  |  | string 2 valid check  |  | string n valid check  | 
- |                       |  |                       |  |                       | 
-  -----------------------    -----------------------    -----------------------  
-            |__________________________|__________________________|              
-                                       |                                         
-                             _______________________                             
-                            |                       |                            
-                            |   create structures   |                            
-                            |                       |                            
-                             -----------------------                             
-                                       |                                         
-                                       |                                         
-                             _______________________                             
-                            |                       |                            
-                            |         nodes         |                            
-                            |                       |                            
-                             -----------------------                             
-             __________________________|__________________________               
-            |                          |                          |              
-  _______________________    _______________________    _______________________  
- |                       |  |                       |  |                       | 
- |        node 1         |  |        node 2         |  |        node n         | 
- |                       |  |                       |  |                       | 
-  -----------------------    -----------------------    -----------------------  
-            |                          |                          |      
+                                       |
+                             _______________________
+                            |                       |
+                            |   parse string list   |
+                            |                       |
+                             -----------------------
+             __________________________|__________________________
+            |                          |                          |
+  _______________________    _______________________    _______________________
+ |                       |  |                       |  |                       |
+ |       string 1        |  |       string 2        |  |       string n        |
+ |                       |  |                       |  |                       |
+  -----------------------    -----------------------    -----------------------
+            |__________________________|__________________________|
+                                       |
+                             _______________________
+                            |                       |
+                            | string validity check |
+                            |                       |
+                             -----------------------
+             __________________________|__________________________
+            |                          |                          |
+  _______________________    _______________________    _______________________
+ |                       |  |                       |  |                       |
+ | string 1 valid check  |  | string 2 valid check  |  | string n valid check  |
+ |                       |  |                       |  |                       |
+  -----------------------    -----------------------    -----------------------
+            |__________________________|__________________________|
+                                       |
+                             _______________________
+                            |                       |
+                            |   create structures   |
+                            |                       |
+                             -----------------------
+                                       |
+                                       |
+                             _______________________
+                            |                       |
+                            |         nodes         |
+                            |                       |
+                             -----------------------
+             __________________________|__________________________
+            |                          |                          |
+  _______________________    _______________________    _______________________
+ |                       |  |                       |  |                       |
+ |        node 1         |  |        node 2         |  |        node n         |
+ |                       |  |                       |  |                       |
+  -----------------------    -----------------------    -----------------------
+            |                          |                          |
 
 This chart was generated by this program, note this is not strictly representative of the program
 '''
 
 
 class Node:
+    """
+    A class to contain object node
+
+    Attributes:
+        name: string
+            the identifier name of the node
+        text: string
+            the text that will be displayed in the box
+        width: int
+            the required width of the box to display the text
+        height: int
+            the required height of the box to display the text
+        column: int
+            the 0 indexed column number this node will be rendered in
+        row: int
+            the 0 indexed row number this node will be rendered in
+        vertices: array of node
+            a list of objects type node, this is used to determine where to draw vertices
+
+    Methods:
+        add_coordinate(column, row):
+            set the column and row for this node
+        add_vertice(node):
+            add a new node to vertices list
+    """
 
     def __init__(self, name, text):
         """
@@ -89,8 +114,10 @@ class Node:
         calculate size of node based on amount of text
 
         Args:
-            name: string containing the identifier of the name: character in range a..z
-            text: string containing the words to display in the box
+            name: string:
+                containing the identifier of the name: character in range a..z
+            text: string:
+                containing the words to display in the box
 
         Returns:
             none
@@ -105,23 +132,22 @@ class Node:
             max_width = max(max_width, len(line))
         self.width = max_width
         self.height = max_height
-         
+
         # these fields will be set when processing coordinates and vertices
         self.column = 0
         self.row = 0
         self.vertices = []
 
     def add_coordinate(self, column, row):
-        """ 
+        """
         configure the nodes coordindates (each node can be in one particular row/column)
-     
+
         Args:
             column: int, 0 index column number
             row: int, 0 index row number
         """
         self.column = column
         self.row = row
-        return
 
     def add_vertice(self, node):
         """
@@ -129,15 +155,42 @@ class Node:
 
         Args:
             node: object type node
-   
+
         Retuns:
             none
         """
         self.vertices.append(node)
-        return
 
 
 class NodeList:
+    """
+    Class to contain list of nodes and parsers to populate nodes structure
+
+    Attributes:
+        nodes: array of node
+
+    Methods:
+        get_node(name):
+            get the node object from the list with the matching name
+        node_str_valid(node_str):
+            check the contents of the node definition string is valid
+        coordinate_str_valid(coord_str):
+            check the contents of the coordinate definition string is valid
+        vertices_str_valid(vertice_str):
+            check the contents of the node definition string is valid
+        parse_node(node_str):
+            parse node defintion string into node structure
+        parse_nodes_str(nodes_str):
+            iterate over list of node string and call parse
+        parse_coordinate(node_str):
+            parse coordinate defintion string into node structure
+        parse_coordinates_str(nodes_str):
+            iterate over list of coordinate string and call parse_coordinate
+        parse_verticee(node_str):
+            parse vertice defintion string into node structure
+        parse_vertices_str(nodes_str):
+            iterate over list of verticee string and call parse_vertice
+    """
 
     def __init__(self):
         self.nodes = []
@@ -150,33 +203,54 @@ class NodeList:
             name: string containing name of node to search for
 
         Returns:
-            node: object type node
+            node: object type node, if no matching name return null
         """
         for node in self.nodes:
             if node.name == name:
                 return node
-        return
+        return None
 
     #######################################################################################
     # check string validity
     #######################################################################################
 
     def node_str_valid(self, node_str):
+        """
+        check whether format and contents of node_str meet rules for processing
+
+        Args:
+            node_str: string:
+                the string from the input file under node section that we are checking
+
+        Return:
+            boolean: true if string meets criteria
+        """
         # test validity of string
         has_delimiter = '=' in node_str
         has_name = ord(node_str[0]) in range(97, 122)  # character between a..z
         has_text = len(node_str) > 2
-    
+
         if not has_delimiter:
             print('node string does not contain valid delimiter: ', node_str)
         if not has_name:
-            print('node string does not have a valid name\nname must be a character in the alphabet between a & z: ', node_str)
+            print('node string does not have a valid name\n\
+                   name must be a character in the alphabet between a & z: ', node_str)
         if not has_text:
             print('node text label was not found: ', node_str)
-        
-        return has_delimiter & has_name & has_text 
+
+        return has_delimiter & has_name & has_text
 
     def coordinate_str_valid(self, coord_str):
+        """
+        check whether format and contents of coord_str meet rules for processing
+
+        Args:
+            coord_str: string:
+                string from the input file under coordinates section that we are checking
+
+        Return:
+            boolean: true if string meets criteria
+        """
         # test validity of string
         print(coord_str)
         has_delimiter = '=' in coord_str
@@ -189,7 +263,7 @@ class NodeList:
         has_x_coord = False
         if len(coord_str) > 3:
             has_x_coord = ord(coord_str[3]) in range(48, 57)   # number between 0-9
-    
+
         if not has_delimiter:
             print('coordinate string does not contain valid delimiter: ', coord_str)
         if not has_start_node:
@@ -198,30 +272,40 @@ class NodeList:
             print('coordinate string does not have a valid column name: ', coord_str)
         if not has_y_coord:
             print('coordinate string does not have a valid row number: ', coord_str)
-       
+
         return has_delimiter & has_start_node & has_x_coord & has_y_coord
 
-    def vertices_str_valid(self, node_str):
+    def vertices_str_valid(self, vertice_str):
+        """
+        check whether format and contents of vertice_str meet rules for processing
+
+        Args:
+            vertice_str: string:
+                the string from the input file under vertice section that we are chceking
+
+        Return:
+            boolean: true if string meets criteria
+        """
         # test validity of string
-        has_delimiter = ',' in node_str
+        has_delimiter = ',' in vertice_str
         # nodes must be in range a..z
-        has_start_node = ord(node_str[0]) in range(97, 122)
-        has_end_node = ord(node_str[2]) in range(97, 122)
-    
+        has_start_node = ord(vertice_str[0]) in range(97, 122)
+        has_end_node = ord(vertice_str[2]) in range(97, 122)
+
         if not has_delimiter:
             print('vertice string does not contain valid delimiter')
         if not has_start_node:
             print('vertice string does not start with a valid node name')
         if not has_end_node:
             print('vertice string does not end with a valid node name')
-        
-        return has_delimiter & has_start_node & has_end_node 
+
+        return has_delimiter & has_start_node & has_end_node
 
     #######################################################################################
     # parsers
     #######################################################################################
 
-    def parse_node_str(self, node_str):
+    def parse_node(self, node_str):
         """
         Populate this nodes parameters with the information from string
 
@@ -245,10 +329,9 @@ class NodeList:
                 text = terms[1]
                 # create new node
                 node = Node(name, text)
-            except:
-                raise Exception('node string parser error')
-
-        return node  
+            except Exception as error:
+                raise Exception('node string parser error') from error
+        return node
 
     def parse_nodes_str(self, nodes_str):
         """
@@ -261,13 +344,12 @@ class NodeList:
             node
         """
         for node_str in nodes_str:
-            node = self.parse_node_str(node_str)
+            node = self.parse_node(node_str)
             self.nodes.append(node)
-        return
 
     def parse_coordinate(self, coordinate_str):
-        """  
-        process a coordinate string 
+        """
+        process a coordinate string
 
         Args:
             coordinate_str: string containing the coordinate definition
@@ -286,13 +368,12 @@ class NodeList:
                 # convert the string ie B2 into 0 indexed numbers
                 row_num = ord(terms[1][0]) - 65
                 col_num = int(terms[1][1]) - 1
-            except:
-                raise Excpetion('coordinate string parser error')
+            except Exception as error:
+                raise Exception('coordinate string parser error') from error
 
             # add the 0 indexed numbers to the node
             node = self.get_node(terms[0])
             node.add_coordinate(col_num, row_num)
-        return
 
     def parse_coordinates_str(self, coordinates_str):
         """
@@ -305,8 +386,7 @@ class NodeList:
             none
         """
         for coordinate in coordinates_str:
-            self.parse_coordinate(coordinate)   
-        return
+            self.parse_coordinate(coordinate)
 
     def parse_vertice(self, vertice):
         """
@@ -324,15 +404,13 @@ class NodeList:
         if self.vertices_str_valid(vertice):
             try:
                 points = vertice.split(',')
-                # get the nodes by name 
+                # get the nodes by name
                 node_start = self.get_node(points[0])
                 node_end = self.get_node(points[1])
                 # add the second node the list of the first
                 node_start.add_vertice(node_end)
-            except:
-                raise Exception('vertice string parsing error')
-
-        return
+            except Exception as error:
+                raise Exception('vertice string parsing error') from error
 
     def parse_vertices_str(self, vertices_str):
         """
@@ -346,5 +424,3 @@ class NodeList:
         """
         for vertice in vertices_str:
             self.parse_vertice(vertice)
-        return
- 

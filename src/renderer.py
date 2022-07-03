@@ -32,73 +32,83 @@ The sequence of steps:
    - print the grid as ascii text
 
 
-                                                          |                                                            
-                                          ____________________________________                                          
-                                         |                                    |                                         
-                                         | iterate through nodes to get sizes |                                         
-                                         |                                    |                                         
-                                          ------------------------------------                                          
-                    _______________________________________|_______________________________________                     
-                   |                                       |                                       |                    
-  ____________________________________    ____________________________________    ____________________________________  
- |                                    |  |                                    |  |                                    | 
- |               size 1               |  |               size 2               |  |               size n               | 
- |                                    |  |                                    |  |                                    | 
-  ------------------------------------    ------------------------------------    ------------------------------------  
-                   |_______________________________________|_______________________________________|                    
-                                                           |                                                            
-                                          ____________________________________                                          
-                                         |                                    |                                         
-                                         |       find the largest size        |                                         
-                                         |                                    |                                         
-                                          ------------------------------------                                          
-                                                           |                                                            
-                                                           |                                                            
-                                          ____________________________________                                          
-                                         |                                    |                                         
-                                         |            create grid             |                                         
-                                         |                                    |                                         
-                                          ------------------------------------                                          
-                    _______________________________________|_______________________________________                     
-                   |                                       |                                       |                    
-  ____________________________________    ____________________________________    ____________________________________  
- |                                    |  |                                    |  |                                    | 
- |             draw box 1             |  |             draw box 2             |  |             draw box n             | 
- |                                    |  |                                    |  |                                    | 
-  ------------------------------------    ------------------------------------    ------------------------------------  
-                   |                                       |                                       |                    
-                   |                                       |                                       |                    
-  ____________________________________    ____________________________________    ____________________________________  
- |                                    |  |                                    |  |                                    | 
- |            draw text 1             |  |            draw text 2             |  |            draw text n             | 
- |                                    |  |                                    |  |                                    | 
-  ------------------------------------    ------------------------------------    ------------------------------------  
-                   |_______________________________________|_______________________________________|                    
-                                                           |                                                            
-                                          ____________________________________                                          
-                                         |                                    |                                         
-                                         |    draw vertices between boxes     |                                         
-                                         |                                    |                                         
-                                          ------------------------------------                                          
-                                                           |                                                            
-                                                           |                                                            
-                                          ____________________________________                                          
-                                         |                                    |                                         
-                                         |         print ascii output         |                                         
-                                         |                                    |                                         
-                                          ------------------------------------                                          
-                                                           |     
+                                                          |
+                                          ____________________________________
+                                         |                                    |
+                                         | iterate through nodes to get sizes |
+                                         |                                    |
+                                          ------------------------------------
+                    _______________________________________|_______________________________________
+                   |                                       |                                       |
+  ____________________________________    ____________________________________    ____________________________________
+ |                                    |  |                                    |  |                                    |
+ |               size 1               |  |               size 2               |  |               size n               |
+ |                                    |  |                                    |  |                                    |
+  ------------------------------------    ------------------------------------    ------------------------------------
+                   |_______________________________________|_______________________________________|
+                                                           |
+                                          ____________________________________
+                                         |                                    |
+                                         |       find the largest size        |
+                                         |                                    |
+                                          ------------------------------------
+                                                           |
+                                                           |
+                                          ____________________________________
+                                         |                                    |
+                                         |            create grid             |
+                                         |                                    |
+                                          ------------------------------------
+                    _______________________________________|_______________________________________
+                   |                                       |                                       |
+  ____________________________________    ____________________________________    ____________________________________
+ |                                    |  |                                    |  |                                    |
+ |             draw box 1             |  |             draw box 2             |  |             draw box n             |
+ |                                    |  |                                    |  |                                    |
+  ------------------------------------    ------------------------------------    ------------------------------------
+                   |                                       |                                       |
+                   |                                       |                                       |
+  ____________________________________    ____________________________________    ____________________________________
+ |                                    |  |                                    |  |                                    |
+ |            draw text 1             |  |            draw text 2             |  |            draw text n             |
+ |                                    |  |                                    |  |                                    |
+  ------------------------------------    ------------------------------------    ------------------------------------
+                   |_______________________________________|_______________________________________|
+                                                           |
+                                          ____________________________________
+                                         |                                    |
+                                         |    draw vertices between boxes     |
+                                         |                                    |
+                                          ------------------------------------
+                                                           |
+                                                           |
+                                          ____________________________________
+                                         |                                    |
+                                         |         print ascii output         |
+                                         |                                    |
+                                          ------------------------------------
+                                                           |
 
 
 This chart was generated by this program, note this is not strictly representative of the program
 '''
 
 
-from node import Node 
-
-
 class Renderer:
+    """
+    Class to managed functions that process strcutures into a 2D array of characters then
+    print to stdout
 
+    Attributes:
+        grid: array of characters
+            used for populating characters that represent the chart
+        max_col: int
+            value of the highest column number used
+        max_row: int
+            value of the highest row number used
+        max_width: int
+            valud of the widest
+    """
     def __init__(self):
         self.grid = []
         self.max_col = 0
@@ -110,7 +120,8 @@ class Renderer:
 
     def create_grid(self, nodes):
         """
-        create a 2D grid of whitespaces that is large enough to fill our nodes with defined text
+        create a 2D grid of whitespaces that is large enough to fill our nodes with
+        defined text
 
         Agrs:
             nodes: array of type node
@@ -128,12 +139,12 @@ class Renderer:
         # set the height/width by finding the max text width and adding spacing and padding
         self.row_width = self.max_width + 6
         self.row_height = self.max_height + 6
-        # define the grid area by finding the largest columns/row numbers and multiply by the height/width
+        # define the grid area by finding the largest columns/row numbers and multiply
+        # by the height/width
         grid_width = self.row_width * (self.max_col + 1)
         grid_height = self.row_height * (self.max_row + 1)
         # create a 2 dimensional array containing white spaces
         self.grid = [ [ ' ' for x in range( grid_width ) ] for y in range( grid_height ) ]
-        return
 
     def draw_node(self, node):
         """
@@ -142,7 +153,7 @@ class Renderer:
         Args:
             node: object node that we wish to draw
         """
-      
+
         # find the position of node within the grid
         x_offset = (node.column * self.row_width)
         y_offset = (node.row * self.row_height)
@@ -161,14 +172,13 @@ class Renderer:
             self.grid[i + y_offset][self.max_width+4 + x_offset] = '|'
         # draw text
         text_offset = (self.max_width - len(node.text)) // 2
-        for i, c in enumerate(node.text):
-            self.grid[3 + y_offset][i + x_offset + text_offset + 3] = c
-        return
+        for i, character in enumerate(node.text):
+            self.grid[3 + y_offset][i + x_offset + text_offset + 3] = character
 
     def draw_vertices(self, node):
         """
         draw the lines that join a node to all other nodes below it
- 
+
         Args:
             node: object of type node
 
@@ -179,7 +189,7 @@ class Renderer:
         # chart must flow from top to bottom
         # vertices can only exit a node from the bottom of the node
         # vertices can only enter a node from the top of the node
-        
+
         # draw the exit nib from the start node
         x_coord_exit = (node.column * self.row_width) + (self.max_width // 2) + 2
         y_coord_exit = (node.row * self.row_height) + self.max_height + 5
@@ -189,37 +199,34 @@ class Renderer:
         x_coord_entry = (node.column * self.row_width) + (self.max_width // 2) + 2
         y_coord_entry = (node.row * self.row_height)
         self.grid[y_coord_entry][x_coord_entry] = '|'
-        
+
         # draw horizontal line from start nib to end nib
         for vertice in node.vertices:
             if node.row < vertice.row:
                 if node.column > vertice.column:
                     x_coord = (vertice.column * self.row_width) + (self.max_width // 2) + 2
                     for i in range(x_coord + 1, x_coord_exit):
-	                self.grid[y_coord_exit][i] = '_'
+                        self.grid[y_coord_exit][i] = '_'
 
                 if node.column < vertice.column:
                     x_coord = (vertice.column * self.row_width) + (self.max_width // 2) + 2
                     for i in range(x_coord_exit + 1, x_coord):
-	                self.grid[y_coord_exit][i] = '_'
-
-        return
+                        self.grid[y_coord_exit][i] = '_'
 
     def print_grid(self):
-        """ 
+        """
         print the contains of the 2D grid array as text to stdout
 
-        Args: 
+        Args:
             none
 
         Returns:
             none
         """
-   
+
         for row in self.grid:
             row_str = ''
             print(row_str.join(row))
-        return
 
     def draw_chart(self, nodes):
         """
@@ -230,14 +237,12 @@ class Renderer:
 
         Args:
             nodes: list of type node
- 
+
         Returns:
             none
         """
-        self.create_grid(nodes.nodes) 
+        self.create_grid(nodes.nodes)
         for node in nodes.nodes:
             self.draw_node(node)
             self.draw_vertices(node)
         self.print_grid()
-        return
-
