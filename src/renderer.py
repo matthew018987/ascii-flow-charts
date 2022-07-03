@@ -203,15 +203,28 @@ class Renderer:
         # draw horizontal line from start nib to end nib
         for vertice in node.vertices:
             if node.row < vertice.row:
+                print('vertice:', node.text, '->', vertice.text)
+                # determine if vertice needs to go towards the left
                 if node.column > vertice.column:
+                    # calcualte vertice endpoint x coordinate
                     x_coord = (vertice.column * self.row_width) + (self.max_width // 2) + 2
                     for i in range(x_coord + 1, x_coord_exit):
                         self.grid[y_coord_exit][i] = '_'
 
+                # determine if vertice needs to go towards the right
                 if node.column < vertice.column:
+                    # calcualte vertice endpoint x coordinate
                     x_coord = (vertice.column * self.row_width) + (self.max_width // 2) + 2
                     for i in range(x_coord_exit + 1, x_coord):
                         self.grid[y_coord_exit][i] = '_'
+
+                # if vertice node is more than 1 row down, draw vertical line
+                if node.row < (vertice.row - 1):
+                    # get destination node entry coordinates
+                    x_dest_coord = (vertice.column * self.row_width) + (self.max_width // 2) + 2
+                    y_dest_coord = (vertice.row * self.row_height)
+                    for i in range(y_coord_exit + 1, y_dest_coord):
+                        self.grid[i][x_dest_coord] = '|'
 
     def print_grid(self):
         """
